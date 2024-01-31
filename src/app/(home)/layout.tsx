@@ -3,6 +3,7 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import NextLink from "next/link";
 import { Link } from "@chakra-ui/react";
 import React from "react";
+import { usePathname } from "next/navigation";
 
 interface HomeLayoutProps {
   children: React.ReactNode;
@@ -13,8 +14,8 @@ const paths: any = {
   "/users": 1,
   "/zones": 2,
 };
-const path = window.location.pathname;
 const HomeLayout = ({ children }: HomeLayoutProps) => {
+  const path = usePathname();
   return (
     <div className="p-10 max-w-7xl m-auto">
       <Tabs defaultIndex={paths[path] as number}>
