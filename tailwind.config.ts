@@ -14,7 +14,10 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       backgroundColor: {
-        "bluegradient": "#0d151f",
+        bluegradient: "#0d151f",
+      },
+      height: {
+        iframe: "700px",
       },
     },
   },

@@ -27,11 +27,12 @@ const InputText = ({
       <input
         type={type}
         placeholder={label}
+        autoComplete="off"
         className="border-none block outline-none w-full"
         {...register(name, validations)}
       />
       {endIcon && (
-        <button type="button" onClick={onEndIconClick}>
+        <button type="button" className="outline-none" onClick={onEndIconClick}>
           {endIcon}
         </button>
       )}

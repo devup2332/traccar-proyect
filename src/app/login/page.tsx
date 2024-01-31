@@ -1,13 +1,17 @@
 "use client";
 import Button from "@/components/atoms/Button";
 import InputText from "@/components/atoms/InputText";
-import IconEye from "@/components/atoms/icons/IconEye";
-import IconNoEye from "@/components/atoms/icons/IconNoEye";
+import { FaEye } from "react-icons/fa6";
+import { FaEyeSlash } from "react-icons/fa6";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { sleep } from "@/lib/utils/sleep";
+import { Toaster, toast } from "sonner";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
   const {
     handleSubmit,
     register,
@@ -16,15 +20,22 @@ const Login = () => {
 
   const loginUser = async (formData: any) => {
     const { username, password } = formData;
-    const response = await fetch("/api/login", {
-      method: "POST",
-      body: JSON.stringify({
-        username,
-        password,
-      }),
-    });
-    const dataResponse = await response.json();
-    console.log({ dataResponse });
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        body: JSON.stringify({
+          username: username.trim(),
+          password: password.trim(),
+        }),
+      });
+      const dataResponse = await response.json();
+      const { token } = dataResponse;
+      localStorage.setItem("token-user", token);
+      const id = toast.loading("Ingresando");
+      await sleep(3000);
+      toast.dismiss(id);
+      router.push("/");
+    } catch (err) {}
   };
 
   const handleError = () => {
@@ -35,7 +46,7 @@ const Login = () => {
     <div className="bg-bluegradient h-screen flex items-center justify-center">
       <form
         action=""
-        className="grid gap-5 bg-white p-8 rounded-xl w-8/12"
+        className="grid gap-5 bg-white py-8 px-5 rounded-xl w-10/12 max-w-md 2xl:px-8"
         onSubmit={handleSubmit(loginUser, handleError)}
       >
         <h1 className="text-2xl text-center font-semibold">Ingresar</h1>
@@ -43,7 +54,7 @@ const Login = () => {
         <div>
           <InputText
             name="username"
-            label="Username"
+            label="Usuario o correo"
             type="text"
             register={register}
             validations={{
@@ -62,19 +73,19 @@ const Login = () => {
         <div>
           <InputText
             name="password"
-            label="Password"
+            label="Contraseña"
             type={showPassword ? "text" : "password"}
             validations={{
               required: {
                 value: true,
-                message: "La contraseña es requerida",
+                message: "Ingrese su contraseña",
               },
             }}
             endIcon={
               showPassword ? (
-                <IconEye className="w-7 h-7" />
+                <FaEyeSlash className="w-7" />
               ) : (
-                <IconNoEye className="w-7 h-7" />
+                <FaEye className="w-7" />
               )
             }
             onEndIconClick={() => setShowPassword(!showPassword)}
@@ -88,12 +99,12 @@ const Login = () => {
           )}
         </div>
         <Button
-          text="Login"
-          color="#000000"
+          text="Ingresar"
           type="submit"
           disabled={errors["username"] || errors["password"] ? true : false}
         />
       </form>
+      <Toaster position="bottom-center" visibleToasts={1} />
     </div>
   );
 };

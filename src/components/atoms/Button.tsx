@@ -2,12 +2,11 @@ import React from "react";
 
 interface CustomButtonProps {
   text: string;
-  color: string;
   type?: "submit" | "reset" | "button";
   disabled?: boolean;
 }
 
-const Button = ({ text, color, type, disabled }: CustomButtonProps) => {
+const Button = ({ text, type, disabled }: CustomButtonProps) => {
   return (
     <button
       className="rounded-md bg-blue-600 py-3 font-bold text-white hover:bg-blue-400 transition-all"
