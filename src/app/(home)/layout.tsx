@@ -13,8 +13,8 @@ const paths: any = {
   "/users": 1,
   "/zones": 2,
 };
+const path = window.location.pathname;
 const HomeLayout = ({ children }: HomeLayoutProps) => {
-  const path = window.location.pathname;
   return (
     <div className="p-10 max-w-7xl m-auto">
       <Tabs defaultIndex={paths[path] as number}>
