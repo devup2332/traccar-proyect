@@ -32,7 +32,7 @@ const UsersPage = () => {
                 <Tr key={u.id}>
                   <Td>{i + 1}</Td>
                   <Td>{u.email}</Td>
-                  <Td>{u.createdAt.toISOString()}</Td>
+                  <Td>tomorrow</Td>
                   <Td>
                     <IconButton
                       aria-label="Delete User"

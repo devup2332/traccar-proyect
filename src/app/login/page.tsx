@@ -46,7 +46,7 @@ const Login = () => {
     <div className="bg-bluegradient h-screen flex items-center justify-center">
       <form
         action=""
-        className="grid gap-5 bg-white py-8 px-5 rounded-xl w-10/12 max-w-md 2xl:px-8"
+        className="grid gap-5 bg-gray-800 py-8 px-5 rounded-xl w-10/12 max-w-md 2xl:px-8"
         onSubmit={handleSubmit(loginUser, handleError)}
       >
         <h1 className="text-2xl text-center font-semibold">Ingresar</h1>

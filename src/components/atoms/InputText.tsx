@@ -1,6 +1,7 @@
 import React from "react";
 import IconEye from "./icons/IconEye";
 import { FieldValues, RegisterOptions, UseFormRegister } from "react-hook-form";
+import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 
 interface InputTextProps {
   type: string;
@@ -23,20 +24,19 @@ const InputText = ({
   validations,
 }: InputTextProps) => {
   return (
-    <div className="w-full border-2 border-black border-opacity-20 rounded-md py-2 px-3 h-14 flex justify-between gap-3">
-      <input
+    <InputGroup>
+      <Input
         type={type}
         placeholder={label}
         autoComplete="off"
-        className="border-none block outline-none w-full"
         {...register(name, validations)}
       />
       {endIcon && (
-        <button type="button" className="outline-none" onClick={onEndIconClick}>
+        <InputRightElement onClick={onEndIconClick}>
           {endIcon}
-        </button>
+        </InputRightElement>
       )}
-    </div>
+    </InputGroup>
   );
 };
 
