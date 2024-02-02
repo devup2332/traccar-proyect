@@ -11,8 +11,7 @@ interface HomeLayoutProps {
 
 const paths: any = {
   "/traccar": 0,
-  "/users": 1,
-  "/zones": 2,
+  "/paraderos": 2,
 };
 const HomeLayout = ({ children }: HomeLayoutProps) => {
   const path = usePathname();
@@ -27,11 +26,8 @@ const HomeLayout = ({ children }: HomeLayoutProps) => {
           >
             <Tab value="1">Traccar</Tab>
           </Link>
-          <Link as={NextLink} href="/users" style={{ textDecoration: "none" }}>
-            <Tab value="2">Users</Tab>
-          </Link>
-          <Link as={NextLink} href="/zones" style={{ textDecoration: "none" }}>
-            <Tab value="3">Zones</Tab>
+          <Link as={NextLink} href="/paraderos" style={{ textDecoration: "none" }}>
+            <Tab value="2">Paraderos</Tab>
           </Link>
         </TabList>
         <TabPanels>
