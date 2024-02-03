@@ -26,7 +26,6 @@ import { FaPen, FaTrash } from "react-icons/fa6";
 import { Toaster, toast } from "sonner";
 import { saveNewInfoParadero } from "@/lib/api/saveNewInfoParadero";
 import { sleep } from "@/lib/utils/sleep";
-console.log(new Date().getTime());
 
 const ParaderosPage = () => {
   const [paraderos, setParaderos] = useState([]);
@@ -43,6 +42,7 @@ const ParaderosPage = () => {
   }, []);
 
   const openEditParadero = (p: any) => {
+    console.log({ p });
     setParaderoToEdit(p);
     onOpen();
   };

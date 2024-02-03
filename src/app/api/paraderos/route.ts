@@ -1,4 +1,4 @@
-import { conn, createConnectionMysql } from "../db";
+import { createConnectionMysql } from "../db";
 
 export const GET = async () => {
   const conn = await createConnectionMysql();
