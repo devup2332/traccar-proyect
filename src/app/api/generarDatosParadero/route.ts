@@ -1,7 +1,7 @@
 import { generatePool } from "../db";
 import moment from "moment";
 
-export const POST = async () => {
+export const GET = async () => {
   const pool = await generatePool();
   const [eventos] = await pool.query(`
     SELECT * FROM tc_events WHERE type = "geofenceEnter"
@@ -80,7 +80,6 @@ export const POST = async () => {
       );
     }
   }
-  console.log("Log");
 
   const [newInfo] = await pool.query(`
     SELECT * FROM paraderos_info
