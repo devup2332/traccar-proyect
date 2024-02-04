@@ -1,6 +1,7 @@
-import { conn } from "../db";
+import { generatePool } from "../db";
 
 export const GET = async () => {
+  const conn = await generatePool();
   const response = conn.query(
     "SELECT id,name,description,time_available as date,ROUND(ST_Area(ST_GeomFromText(area,0)) * 1000000000) as area FROM tc_geofences",
   );
