@@ -57,8 +57,15 @@ const ParaderosPage = () => {
     toast.dismiss(id);
   };
 
+  const listenDatabase = () => {
+    setInterval(() => {
+      getData()
+    },5000)
+  }
+
   return (
     <div>
+      <Button colorScheme="blue" onClick={listenDatabase}>Escuchar</Button>
       <TableContainer>
         <Table>
           <Thead>
