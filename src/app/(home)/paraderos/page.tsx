@@ -20,12 +20,14 @@ import {
   ModalFooter,
   Button,
 } from "@chakra-ui/react";
+import moment from "moment-timezone";
 import { fetchParaderos } from "@/lib/api/fetchParaderos";
 import { useForm } from "react-hook-form";
 import { FaPen, FaTrash } from "react-icons/fa6";
 import { Toaster, toast } from "sonner";
 import { saveNewInfoParadero } from "@/lib/api/saveNewInfoParadero";
 import { sleep } from "@/lib/utils/sleep";
+console.log(new Date().toISOString());
 
 const ParaderosPage = () => {
   const [paraderos, setParaderos] = useState([]);
@@ -63,10 +65,9 @@ const ParaderosPage = () => {
             <Tr>
               <Td>#</Td>
               <Td>Nombre</Td>
-              <Td>Descripcion</Td>
-              <Td>Area</Td>
-              <Td>Fecha Definida</Td>
-              <Td>Acciones</Td>
+              <Td>Hora Estimada</Td>
+              <Td>Hora Llegada</Td>
+              <Td>Estado</Td>
             </Tr>
           </Thead>
           <Tbody>
@@ -74,26 +75,24 @@ const ParaderosPage = () => {
               return (
                 <Tr key={i}>
                   <Td>{i + 1}</Td>
-                  <Td>{p.name}</Td>
-                  <Td>{p.description}</Td>
-                  <Td>{p.area}</Td>
-                  <Td>{p.date || "Fecha no definida"}</Td>
+                  <Td>{p.nombre}</Td>
                   <Td>
-                    <IconButton
-                      aria-label="Edit"
-                      mr={3}
-                      onClick={() => openEditParadero(p)}
-                    >
-                      <FaPen />
-                    </IconButton>
-                    <IconButton
-                      aria-label="Trash"
-                      color="red"
-                      onClick={() => openEditParadero(p.id)}
-                    >
-                      <FaTrash />
-                    </IconButton>
+                    {p.hora_estimada
+                      ? moment(new Date(p.hora_estimada.replace(" ", "T")))
+                          .subtract(5, "hours")
+                          .tz("America/Lima")
+                          .format("LT")
+                      : ""}
                   </Td>
+                  <Td>
+                    {p.hora_llegada
+                      ? moment(new Date(p.hora_llegada.replace(" ", "T")))
+                          .subtract(5, "hours")
+                          .tz("America/Lima")
+                          .format("LT")
+                      : ""}
+                  </Td>
+                  <Td>{p.estado}</Td>
                 </Tr>
               );
             })}
