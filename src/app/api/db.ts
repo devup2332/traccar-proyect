@@ -9,11 +9,10 @@ export const conn = mysql({
     port: environments.DB_PORT,
     database: environments.DB_DATABASE,
     user: environments.DB_USER,
-    insecureAuth: false,
   },
 });
 
-export const createConnectionMysql = async () => {
+export const generatePool = async () => {
   return await mysql2.createConnection({
     host: environments.DB_HOST,
     password: environments.DB_PASSWORD,
