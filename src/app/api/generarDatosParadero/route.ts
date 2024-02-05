@@ -10,6 +10,11 @@ export const GET = async () => {
   const [paraderos] = await pool.query(`
     SELECT * FROM paraderos_info
 `);
+  for (let geoid = 8; geoid <= 20; geoid++) {
+    await pool.query(
+      `UPDATE paraderos_info SET hora_llegada = NULL, estado = NULL, diferencia_horas = NULL WHERE id=${geoid}`,
+    );
+  }
 
   const newZones: string[] = [];
   for (const e of eventos as any) {
@@ -17,7 +22,7 @@ export const GET = async () => {
     const idMax = Math.max(
       ...(eventos as any)
         .filter((e: any) => e.geofenceid === geofenceid)
-        .map((e: any) => e.id)
+        .map((e: any) => e.id),
     );
     if (geofenceid === 8) {
       if (idMax < id) continue;
@@ -27,7 +32,7 @@ export const GET = async () => {
         .slice(0, 19)
         .replace("T", " ");
       await pool.query(
-        `UPDATE paraderos_info SET hora_estimada = "${initalDate}",hora_llegada = "${initalDate}" WHERE id=${geofenceid} `
+        `UPDATE paraderos_info SET hora_estimada = "${initalDate}",hora_llegada = "${initalDate}" WHERE id=${geofenceid} `,
       );
       let index = 0;
       let backup = "";
@@ -49,7 +54,7 @@ export const GET = async () => {
         newZones.push(d);
 
         await pool.query(
-          `UPDATE paraderos_info SET hora_estimada = "${d}" WHERE id=${id + 1} `
+          `UPDATE paraderos_info SET hora_estimada = "${d}" WHERE id=${id + 1} `,
         );
 
         index++;
@@ -58,7 +63,7 @@ export const GET = async () => {
       const idMax = Math.max(
         ...(eventos as any)
           .filter((e: any) => e.geofenceid === 8)
-          .map((e: any) => e.id)
+          .map((e: any) => e.id),
       );
       if (idMax > id) continue;
       const d = moment(eventtime)
@@ -70,13 +75,13 @@ export const GET = async () => {
       const d2 = new Date(newZones[geofenceid - 9]).getTime();
       const result = Math.round((d1 - d2) / 1000 / 60);
       let status = null;
-      if (result <= 0) status = "a tiempo";
+      if (result <= 0 && result > -20) status = "a tiempo";
       if (result > 0 && result < 20) status = "tarde";
       console.log({ status, geofenceid, result });
       if (status === null) continue;
 
       await pool.query(
-        `UPDATE paraderos_info SET hora_llegada = "${d}",estado = "${status}",diferencia_horas = ${result} WHERE id=${geofenceid} `
+        `UPDATE paraderos_info SET hora_llegada = "${d}",estado = "${status}",diferencia_horas = ${result} WHERE id=${geofenceid} `,
       );
     }
   }
