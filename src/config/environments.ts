@@ -4,4 +4,5 @@ export const environments = {
   DB_PASSWORD: process.env.DB_PASSWORD || "",
   DB_PORT: Number(process.env.DB_PORT) || 3306,
   DB_DATABASE: process.env.DB_DATABASE || "",
+  API_URL: process.env.NEXT_PUBLIC_API_URL || "",
 };
