@@ -1,21 +1,14 @@
-import { generatePool } from "../db";
 import moment from "moment";
+import { conn } from "../db";
 
 export const GET = async () => {
-  const pool = await generatePool();
-  const [eventos] = await pool.query(`
+  const eventos = await conn.query(`
     SELECT * FROM tc_events WHERE type = "geofenceEnter"
 `);
 
-  const [paraderos] = await pool.query(`
+  const paraderos = await conn.query(`
     SELECT * FROM paraderos_info
 `);
-  for (let geoid = 8; geoid <= 20; geoid++) {
-    await pool.query(
-      `UPDATE paraderos_info SET hora_llegada = NULL, estado = NULL, diferencia_horas = NULL WHERE id=${geoid}`,
-    );
-  }
-
   const newZones: string[] = [];
   for (const e of eventos as any) {
     const { eventtime, geofenceid, id } = e;
@@ -31,7 +24,7 @@ export const GET = async () => {
         .toISOString()
         .slice(0, 19)
         .replace("T", " ");
-      await pool.query(
+      await conn.query(
         `UPDATE paraderos_info SET hora_estimada = "${initalDate}",hora_llegada = "${initalDate}" WHERE id=${geofenceid} `,
       );
       let index = 0;
@@ -53,7 +46,7 @@ export const GET = async () => {
         backup = d;
         newZones.push(d);
 
-        await pool.query(
+        await conn.query(
           `UPDATE paraderos_info SET hora_estimada = "${d}" WHERE id=${id + 1} `,
         );
 
@@ -75,18 +68,17 @@ export const GET = async () => {
       const d2 = new Date(newZones[geofenceid - 9]).getTime();
       const result = Math.round((d1 - d2) / 1000 / 60);
       let status = null;
-      if (result <= 0 && result > -20) status = "a tiempo";
+      if (result <= 0) status = "a tiempo";
       if (result > 0 && result < 20) status = "tarde";
-      console.log({ status, geofenceid, result });
       if (status === null) continue;
 
-      await pool.query(
+      await conn.query(
         `UPDATE paraderos_info SET hora_llegada = "${d}",estado = "${status}",diferencia_horas = ${result} WHERE id=${geofenceid} `,
       );
     }
   }
 
-  const [newInfo] = await pool.query(`
+  const newInfo = await conn.query(`
     SELECT * FROM paraderos_info
 `);
   const res = (newInfo as any).filter((n: any) => n.estado);
